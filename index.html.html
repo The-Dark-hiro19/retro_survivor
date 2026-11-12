@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Survivor - Juego Arcade by The Dark Hiro</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        arcadebg: '#0a0a12',
+                        cardbg: '#141422',
+                        neonred: '#e74c3c',
+                        neongreen: '#2ecc71',
+                        neonblue: '#3498db',
+                        neonyellow: '#f1c40f',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        arcade: ['Courier New', monospace]
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Efectos de brillo de neón personalizados */
+        .neon-glow-red {
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+        }
+        .neon-glow-green {
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
+        }
+        .neon-glow-blue {
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+        }
+        .neon-text-blue {
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.7);
+        }
+        .neon-text-green {
+            text-shadow: 0 0 10px rgba(46, 204, 113, 0.7);
+        }
+        .neon-text-red {
+            text-shadow: 0 0 10px rgba(231, 76, 60, 0.7);
+        }
+        body {
+            background-color: #0a0a12;
+            color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-neonblue selection:text-white">
+
+    <!-- Barra de navegación -->
+    <header class="border-b border-gray-800 bg-arcadebg/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-neonblue to-neongreen flex items-center justify-center neon-glow-blue">
+                    <i class="fa-solid fa-gamepad text-arcadebg text-xl font-bold"></i>
+                </div>
+                <span class="font-arcade text-xl sm:text-2xl font-bold tracking-wider neon-text-blue">RETRO SURVIVOR</span>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-semibold text-gray-300">
+                <a href="#hero" class="hover:text-neonblue transition">Inicio</a>
+                <a href="#mecánicas" class="hover:text-neongreen transition">Mecánicas & Física</a>
+                <a href="#variables" class="hover:text-neonyellow transition">Variables</a>
+                <a href="#codigo" class="hover:text-neonred transition">Código Python</a>
+            </nav>
+            <div>
+                <a href="#codigo" class="px-5 py-2.5 rounded-xl bg-neonblue text-arcadebg font-bold hover:bg-blue-400 transition shadow-lg shadow-blue-500/30 flex items-center gap-2">
+                    <i class="fa-solid fa-code"></i> Ver Código
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="flex-grow">
+        
+        <!-- Hero Section -->
+        <section id="hero" class="relative overflow-hidden py-20 lg:py-32">
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-arcadebg to-arcadebg pointer-events-none"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cardbg border border-gray-700 text-xs sm:text-sm font-medium mb-6 text-neongreen">
+                    <span class="w-2.5 h-2.5 rounded-full bg-neongreen animate-pulse"></span>
+                    Desarrollado en Python 3.11 con Pygame
+                </div>
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6">
+                    Sobrevive a la horda con <span class="neon-text-blue text-transparent bg-clip-text bg-gradient-to-r from-neonblue to-neongreen">Matemáticas y Física</span>
+                </h1>
+                <p class="max-w-3xl mx-auto text-lg sm:text-xl text-gray-400 mb-10">
+                    Un juego arcade tipo <i>Horde Survivor</i> diseñado para aprender programación de alto rendimiento, vectores trigonométricos y cinemática en tiempo real a 60 FPS.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="copiarComando()" class="px-8 py-4 rounded-xl bg-gradient-to-r from-neongreen to-emerald-600 text-arcadebg font-bold text-base hover:opacity-90 transition neon-glow-green flex items-center gap-3">
+                        <i class="fa-solid fa-terminal"></i> Copiar Comando de Ejecución
+                    </button>
+                    <a href="#mecánicas" class="px-8 py-4 rounded-xl bg-cardbg border border-gray-700 font-bold text-base hover:bg-gray-800 transition flex items-center gap-3 text-gray-200">
+                        <i class="fa-solid fa-book-open"></i> Explorar Teoría
+                    </a>
+                </div>
+                <div id="toast" class="hidden mt-4 text-sm text-neongreen font-mono">¡Comando copiado al portapapeles! 🚀</div>
+            </div>
+        </section>
+
+        <!-- Sección de Estadísticas / Números Clave -->
+        <section class="py-12 bg-cardbg/50 border-y border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="p-6 rounded-2xl bg-cardbg border border-gray-800 neon-glow-blue">
+                    <div class="text-3xl sm:text-4xl font-arcade font-bold text-neonblue mb-2">60</div>
+                    <div class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider">Cuadros por Segundo (FPS)</div>
+                </div>
+                <div class="p-6 rounded-2xl bg-cardbg border border-gray-800 neon-glow-green">
+                    <div class="text-3xl sm:text-4xl font-arcade font-bold text-neongreen mb-2">atan2</div>
+                    <div class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider">Trigonometría Vectorial</div>
+                </div>
+                <div class="p-6 rounded-2xl bg-cardbg border border-gray-800 neon-glow-red">
+                    <div class="text-3xl sm:text-4xl font-arcade font-bold text-neonred mb-2">math.hypot</div>
+                    <div class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider">Colisiones Geométricas</div>
+                </div>
+                <div class="p-6 rounded-2xl bg-cardbg border border-gray-800 border-yellow-500/30">
+                    <div class="text-3xl sm:text-4xl font-arcade font-bold text-neonyellow mb-2">1.5x</div>
+                    <div class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider">Escalado de Progresión XP</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mecánicas y Ciencias detrás del juego -->
+        <section id="mecánicas" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">Ciencia, Matemáticas y Código</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Así es como convertimos fórmulas de la pizarra en un motor de videojuego fluido y dinámico.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Física Base -->
+                <div class="p-8 rounded-3xl bg-cardbg border border-gray-800 relative group hover:border-neonblue transition">
+                    <div class="w-12 h-12 rounded-2xl bg-neonblue/20 text-neonblue flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-neonblue">1. Física Base (Cinemática)</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        El movimiento del jugador y los enemigos se rige por incrementos constantes de velocidad sumados a sus coordenadas cartesianas en cada cuadro: $x = x + v_x$.
+                    </p>
+                    <div class="p-3 rounded-xl bg-arcadebg font-mono text-xs text-gray-300 border border-gray-800">
+                        if teclas[pygame.K_d]:<br>&nbsp;&nbsp;self.x += self.velocidad
+                    </div>
+                </div>
+
+                <!-- Matemáticas Base -->
+                <div class="p-8 rounded-3xl bg-cardbg border border-gray-800 relative group hover:border-neongreen transition">
+                    <div class="w-12 h-12 rounded-2xl bg-neongreen/20 text-neongreen flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-square-root-variable"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-neongreen">2. Matemáticas (Trigonometría)</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        Para que las balas viajen directamente al enemigo más cercano, usamos arcotangente (`atan2`) para hallar el ángulo y seno/coseno para descomponer el vector de velocidad.
+                    </p>
+                    <div class="p-3 rounded-xl bg-arcadebg font-mono text-xs text-gray-300 border border-gray-800">
+                        angulo = math.atan2(dy, dx)<br>self.vx = math.cos(angulo) * vel
+                    </div>
+                </div>
+
+                <!-- Geometría y Colisiones -->
+                <div class="p-8 rounded-3xl bg-cardbg border border-gray-800 relative group hover:border-neonred transition">
+                    <div class="w-12 h-12 rounded-2xl bg-neonred/20 text-neonred flex items-center justify-center text-xl mb-6">
+                        <i class="fa-solid fa-shapes"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-neonred">3. Geometría (Colisiones)</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                        El teorema de Pitágoras ($h = \sqrt{a^2 + b^2}$) implementado en `math.hypot` evalúa la distancia exacta entre centros circulares para detectar impactos instantáneos.
+                    </p>
+                    <div class="p-3 rounded-xl bg-arcadebg font-mono text-xs text-gray-300 border border-gray-800">
+                        if math.hypot(ex - jx, ey - jy) < (r1 + r2):<br>&nbsp;&nbsp;jugador.vida -= 1
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Variables del Motor -->
+        <section id="variables" class="py-20 bg-cardbg/30 border-y border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl sm:text-4xl font-bold mb-4">Anatomía de las Variables</h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto">Las piezas fundamentales que controlan las estadísticas y reglas del juego.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="p-6 rounded-2xl bg-cardbg border border-gray-800">
+                        <div class="text-neonblue font-mono font-bold text-lg mb-1">Jugador (x, y, radio)</div>
+                        <p class="text-gray-400 text-sm">Posición bidimensional en pantalla y radio de colisión de 15 píxeles.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-cardbg border border-gray-800">
+                        <div class="text-neongreen font-mono font-bold text-lg mb-1">Vida y XP</div>
+                        <p class="text-gray-400 text-sm">Sistema de progresión donde `vida_max` es 100 y la experiencia escala un 50% por nivel.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-cardbg border border-gray-800">
+                        <div class="text-neonred font-mono font-bold text-lg mb-1">Balas & Enemigos</div>
+                        <p class="text-gray-400 text-sm">Listas dinámicas que gestionan entidades en tiempo real con disparos automáticos.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-cardbg border border-gray-800">
+                        <div class="text-neonyellow font-mono font-bold text-lg mb-1">reloj_disparo</div>
+                        <p class="text-gray-400 text-sm">Contador de ciclos que regula la frecuencia de fuego automático del personaje.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-cardbg border border-gray-800">
+                        <div class="text-purple-400 font-mono font-bold text-lg mb-1">tiempo_reaparicion</div>
+                        <p class="text-gray-400 text-sm">Frecuencia de generación horda de enemigos en los bordes de la pantalla.</p>
+                    </div>
+                    <div class="p-6 rounded-2xl bg-cardbg border border-gray-800">
+                        <div class="text-pink-400 font-mono font-bold text-lg mb-1">teclas & estado</div>
+                        <p class="text-gray-400 text-sm">Lectura instantánea de eventos de teclado y banderas de estado de Game Over.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Código y Ejecución -->
+        <section id="codigo" class="py-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-4">¿Cómo ejecutar el proyecto?</h2>
+                <p class="text-gray-400">Abre tu terminal en la unidad D y ejecuta el script principal:</p>
+            </div>
+
+            <div class="p-6 rounded-2xl bg-cardbg border border-gray-700 shadow-2xl">
+                <div class="flex items-center justify-between mb-4 pb-4 border-b border-gray-800">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="ml-2 font-mono text-xs text-gray-400">Terminal - Python 3.11</span>
+                    </div>
+                    <button onclick="copiarComando()" class="text-xs px-3 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-300 transition">
+                        <i class="fa-solid fa-copy mr-1"></i> Copiar
+                    </button>
+                </div>
+                <div class="font-mono text-sm text-neongreen bg-arcadebg p-4 rounded-xl border border-gray-800 overflow-x-auto">
+                    py -3.11 "D:\mi_primer_juego.py"
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="border-t border-gray-800 bg-arcadebg py-8 text-center text-sm text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>Retro Survivor • Proyecto Educativo & Exposición Escolar</div>
+            <div class="flex space-x-4">
+                <span class="text-neonblue font-mono">Python + Pygame</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script de interacción -->
+    <script>
+        function copiarComando() {
+            const comando = 'py -3.11 "D:\\mi_primer_juego.py"';
+            
+            // Usar método alternativo compatible con iFrames restrictivos
+            const textarea = document.createElement('textarea');
+            textarea.value = comando;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                const toast = document.getElementById('toast');
+                toast.classList.remove('hidden');
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 3000);
+            } catch (err) {
+                console.error('Error al copiar', err);
+            }
+            document.body.removeChild(textarea);
+        }
+    </script>
+
+</body>
+</html>
